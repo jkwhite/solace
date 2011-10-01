@@ -1,0 +1,27 @@
+Solace
+------
+
+- default shell is groovy
+- solace sources all scripts matchings ~/.solace/scripts/*.groovy
+- colorschemes should be placed in ~/.solace/colors, following the format:
+    $c.colors['color_sheme_name'] = [
+        '*':[
+            background:'#331211FF',
+            foreground:'white',
+            caretColor:'green'
+        ],
+        '*.prompt':[
+            background:'#442322FF',
+            foreground:'yellow',
+        ],
+        '*.input':[
+            background:'#442322FF',
+            foreground:'white',
+            caretColor:'green'
+        ],
+        '*.choice':[
+            background:'#664544FF',
+            foreground:'yellow'
+        ]
+    ]
+    - selector format is '<SwingComponentName>.<class>'

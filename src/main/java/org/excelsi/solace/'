@@ -1,0 +1,26 @@
+package org.excelsi.solace;
+
+
+import javax.swing.*;
+
+
+import com.apple.mrj.*;
+
+
+public class SMenu implements MRJAboutHandler, MRJQuitHandler, MRJPrefsHandler {
+    public void apply(JFrame f) {
+        MRJApplicationUtils.registerAboutHandler(this);
+        MRJApplicationUtils.registerPrefsHandler(this);
+        MRJApplicationUtils.registerQuitHandler(this);
+    }
+
+    public void handleAbout() {
+        System.err.println("wodkowdk");
+    }
+
+    public void handlePrefs() {
+    }
+
+    public void handleQuit() {
+    }
+}
