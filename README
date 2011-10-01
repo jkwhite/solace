@@ -1,8 +1,15 @@
 Solace
 ------
 
-- default shell is groovy
-- solace sources all scripts matchings ~/.solace/scripts/*.groovy
+- default shell language is groovy
+- solace has builtin functions for formatting results, eg try "(1..100).table 5" or "(1..100).sequence()"
+- any result type can define a custom renderer through $c.renderer.link(Class, org.excelsi.solace.Renderer), eg:
+    $c.renderer.link(SomeClass, new org.excelsi.solace.Renderer() {
+        JComponent render(Object someObject, String... context) {
+            return color(new JLabel(someObject.toString()), context)
+        }
+    })
+- solace sources all scripts matching ~/.solace/scripts/*.groovy in addition to ~/.solacerc
 - colorschemes should be placed in ~/.solace/colors, following the format:
     $c.colors['color_sheme_name'] = [
         '*':[
@@ -24,4 +31,5 @@ Solace
             foreground:'yellow'
         ]
     ]
-    - selector format is '<SwingComponentName>.<class>'
+    - selector format is '<SwingComponentName>.<context>', eg 'JLabel.choice'
+    - '*' can be used to match either all SwingComponentName or context
