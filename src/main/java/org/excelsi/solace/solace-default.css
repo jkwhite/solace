@@ -1,0 +1,43 @@
+/*.root {
+    -fx-background-color: rgba(0,0,0,0);
+}
+*/
+
+.output {
+    -fx-font: normal normal 12pt "Courier New";
+    -fx-text-fill: white;
+}
+
+.error {
+    -fx-font: normal bold 12pt "Courier New";
+    -fx-text-fill: red;
+}
+
+.prompt {
+    -fx-font: normal bold 12pt "Courier New";
+    -fx-text-fill: white;
+}
+
+.input {
+    -fx-font: normal bold 12pt "Courier New";
+    -fx-text-fill: white;
+    /*
+    -fx-opacity: 1;
+    -fx-font-smoothing-type: gray;
+    -fx-font-size:28;
+    */
+}
+
+.console {
+    -fx-background-color: #000;
+}
+
+.keydesc {
+    -fx-font: normal normal 28pt "Cambria";
+    -fx-text-fill: #000;
+}
+
+.menu {
+    padding-top: 20px;
+    -fx-background-image: url('/org/excelsi/sketch/parchment-small2.jpg');
+}

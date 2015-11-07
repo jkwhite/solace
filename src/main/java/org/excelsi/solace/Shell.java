@@ -10,6 +10,7 @@ public interface Shell {
     public void init();
 
     public void setVariable(String name, Object value);
+    public Object getVariable(String name);
 
     public void setPreparse(boolean p);
 

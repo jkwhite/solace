@@ -29,6 +29,10 @@ public class GShell implements Shell {
         _binding.setVariable(name, value);
     }
 
+    public Object getVariable(String name) {
+        return _binding.getVariable(name);
+    }
+
     public Set getVariables() {
         return _binding.getVariables().keySet();
     }
@@ -64,15 +68,21 @@ public class GShell implements Shell {
             return res;
         }
         catch(Exception e) {
-            e.printStackTrace();
-            return e.getMessage();
+            throw new RuntimeException(e);
+            //e.printStackTrace();
+            //return e.getMessage();
         }
     }
 
     public void init() {
         setVariable("$s", this);
         try {
-            _interpreter.evaluate(getClass().getClassLoader().getResource("META-INF/solace/core.groovy").openStream());
+            try {
+                _interpreter.evaluate(getClass().getClassLoader().getResource("META-INF/solace/core.groovy").openStream());
+            }
+            catch(Exception e) {
+                System.err.println("failed executing core.groovy: "+e);
+            }
             for(Enumeration<URL> us=getClass().getClassLoader().getResources("META-INF/solace/commands.groovy");us.hasMoreElements();) {
                 URL u = us.nextElement();
                 InputStream is = null;
@@ -82,6 +92,7 @@ public class GShell implements Shell {
                     //_interpreter.execute(readFully(is));
                 }
                 catch(Exception e) {
+                    System.err.println("failed executing "+u+": "+e);
                     e.printStackTrace();
                 }
                 finally {
@@ -106,6 +117,9 @@ public class GShell implements Shell {
         try {
             r = new BufferedInputStream(new FileInputStream(f));
             _interpreter.evaluate(r);
+        }
+        catch(Exception e) {
+            System.err.println("failed executing "+f+": "+e);
         }
         finally {
             if(r!=null) try { r.close(); } catch(IOException e) {}
