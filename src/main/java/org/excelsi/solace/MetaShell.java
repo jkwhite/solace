@@ -11,11 +11,24 @@ public class MetaShell {
     private static final String PLUGINS = "/plugins";
     private static final String SCRIPTS = "/scripts";
     private static final String DB = "/var";
+    private static final String HISTORY = "/history";
     private String _root;
     private ClassLoader _cl;
 
 
     public MetaShell() {
+    }
+
+    public History createHistory() {
+        Sink<String> sink;
+        try {
+            sink = new FileSink(root()+HISTORY);
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+            sink = null;
+        }
+        return new History(Files.textLines(root()+HISTORY), sink);
     }
 
     public void setRoot(String root) { _root = root; }
@@ -56,6 +69,16 @@ public class MetaShell {
 
     public File getColorscheme(String name) {
         return new File(root()+COLORS, name+".groovy");
+    }
+
+    public String getUserStylesheetUrl() {
+        File css = new File(root()+"/user.css");
+        if(css.exists()) {
+            return "file://"+css;
+        }
+        else {
+            return null;
+        }
     }
 
     //public Object getVar(String name) {

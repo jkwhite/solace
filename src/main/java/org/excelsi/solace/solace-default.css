@@ -1,11 +1,17 @@
-/*.root {
-    -fx-background-color: rgba(0,0,0,0);
+/*
+.tabs {
+    -fx-background-color: #000;
 }
 */
+
+.scroll-pane > .viewport {
+   -fx-background-color: transparent;
+}
 
 .output {
     -fx-font: normal normal 12pt "Courier New";
     -fx-text-fill: white;
+    -fx-alignment: bottom-left;
 }
 
 .error {
@@ -18,20 +24,23 @@
     -fx-text-fill: white;
 }
 
-.input {
+.input, .input .label {
     -fx-font: normal bold 12pt "Courier New";
     -fx-text-fill: white;
-    /*
-    -fx-opacity: 1;
-    -fx-font-smoothing-type: gray;
-    -fx-font-size:28;
-    */
+}
+
+.cursor {
+    -fx-font: normal bold 12pt "Courier New";
+    -fx-text-fill: white;
+    -fx-background-color: #4f8;
 }
 
 .console {
     -fx-background-color: #000;
+    width:100%;
 }
 
+/*
 .keydesc {
     -fx-font: normal normal 28pt "Cambria";
     -fx-text-fill: #000;
@@ -41,3 +50,4 @@
     padding-top: 20px;
     -fx-background-image: url('/org/excelsi/sketch/parchment-small2.jpg');
 }
+*/

@@ -18,9 +18,20 @@ public class JfxMetaConsole implements MetaConsole {
         return _shellFactory;
     }
 
-    @Override
-    public void newTerminal() {
+    @Override public void nameTerminal(String name) {
+        _delegate.nameTerminal(name);
+    }
+
+    @Override public void newTerminal() {
         _delegate.newTerminal();
+    }
+
+    @Override public void nextTerminal() {
+        _delegate.nextTerminal();
+    }
+
+    @Override public void prevTerminal() {
+        _delegate.prevTerminal();
     }
 
     @Override

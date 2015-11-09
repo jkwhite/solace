@@ -11,16 +11,23 @@ ExpandoMetaClass.enableGlobally()
 // keybindings
 $c.keybindings['C-c'] = { $c.brk() }
 $c.keybindings['C-d'] = { $w.closeConsole() }
+$c.keybindings['back_space'] = { $c.bksp() }
+$c.keybindings['up'] = { $c.historyBack() }
+$c.keybindings['down'] = { $c.historyForward() }
+$c.keybindings['left'] = { $c.cursorLeft() }
+$c.keybindings['right'] = { $c.cursorRight() }
 prompt = { '% ' }
 
 // builtins
 
 history = { $c.history.collectEntries { k,v -> [k,v.in] }.sequence() }
 pow = { x, y -> Math.pow(x,y) }
+prn = { $c.print(it) }
+$name = { $w.nameTerminal(it) }
 
-n = { $w.newConsole() }
-c = { $w.closeConsole() }
-img = { new javax.swing.ImageIcon(it.toString()) }
+//n = { $w.newConsole() }
+//c = { $w.closeConsole() }
+//img = { new javax.swing.ImageIcon(it.toString()) }
 
 infuse = { obj, opts ->
     opts.each { obj[it.key] = it.value }
@@ -67,6 +74,27 @@ javax.swing.JComponent.metaClass.label = {
     p.add(delegate, BorderLayout.CENTER)
     p.add($r.color(new JLabel(it, SwingConstants.CENTER)), BorderLayout.SOUTH)
     return p
+}
+
+img = { u, opts=[:] ->
+    infuse(new javafx.scene.image.ImageView(new javafx.scene.image.Image(u.toString())), opts)
+}
+
+javafx.scene.Node.metaClass.label = { text, opts=[:] ->
+    infuse(new javafx.scene.control.Label(text, delegate), opts)
+}
+
+about = {
+    img('/solace1.jpg').label(
+'''Solace 1.0
+(c) 2015 John K White
+dhcmrlchtdj@gmail.com
+
+adrift in space where
+the vast gulf between
+wandering minds awake
+wayward destinations,
+console offers solace''', [style:"-fx-background-color:#444"])
 }
 
 java.util.List.metaClass.table = { cols, opts=[:] ->
