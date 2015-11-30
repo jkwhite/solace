@@ -48,6 +48,7 @@ public class JfxTabs extends TabPane implements MetaConsole {
         t.setContent(cons);
         getTabs().add(t);
         getSelectionModel().select(t);
+        cons.init();
         cons.requestFocus();
     }
 
@@ -73,7 +74,23 @@ public class JfxTabs extends TabPane implements MetaConsole {
         focusConsole();
     }
 
-    public void focusConsole() {
+    @Override public void cutSelection() {
+        currentConsole().cutSelection();
+    }
+
+    @Override public void copySelection() {
+        currentConsole().copySelection();
+    }
+
+    @Override public void pasteBuffer() {
+        currentConsole().pasteBuffer();
+    }
+
+    private JfxConsole currentConsole() {
+        return (JfxConsole) getSelectionModel().getSelectedItem().getContent();
+    }
+
+    private void focusConsole() {
         Tab nt = getSelectionModel().getSelectedItem();
         if(nt!=null) {
             nt.getContent().requestFocus();

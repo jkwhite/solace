@@ -1,7 +1,7 @@
 package org.excelsi.solace;
 
 
-public interface MetaConsole {
+public interface MetaConsole extends Editable {
     void nameTerminal(String name);
     void newTerminal();
     void nextTerminal();

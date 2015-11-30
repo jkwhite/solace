@@ -34,10 +34,7 @@ public class History {
     public void commit() {
         if(_current!=null) {
             final String next = _current.stringify();
-            _h.add(next);
-            if(_sink!=null) {
-                _sink.write(next);
-            }
+            persist(next);
             _current = null;
         }
         _c = _h.size();
@@ -58,5 +55,14 @@ public class History {
             _c++;
         }
         return _c==_h.size() ? _snapshot : _h.get(_c);
+    }
+
+    private void persist(String line) {
+        if(! "".equals(line.trim()) && (_h.isEmpty() || !_h.get(_h.size()-1).equals(line))) {
+            _h.add(line);
+            if(_sink!=null) {
+                _sink.write(line);
+            }
+        }
     }
 }

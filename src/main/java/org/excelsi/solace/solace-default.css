@@ -9,29 +9,39 @@
 }
 
 .output {
-    -fx-font: normal normal 12pt "Courier New";
+    -fx-font: normal normal 10pt "Courier New";
     -fx-text-fill: white;
     -fx-alignment: bottom-left;
 }
 
+/*
+GridPane.output {
+    -fx-hgap:10px;
+    -fx-vgap:10px;
+}
+*/
+
 .error {
-    -fx-font: normal bold 12pt "Courier New";
+    -fx-font: normal bold 10pt "Courier New";
     -fx-text-fill: red;
 }
 
 .prompt {
-    -fx-font: normal bold 12pt "Courier New";
+    -fx-font: normal bold 10pt "Courier New";
     -fx-text-fill: white;
 }
 
 .input, .input .label {
-    -fx-font: normal bold 12pt "Courier New";
+    -fx-font: normal bold 10pt "Courier New";
     -fx-text-fill: white;
+    -fx-fill: white;
+    /*-fx-background-color: #000;*/
 }
 
 .cursor {
-    -fx-font: normal bold 12pt "Courier New";
-    -fx-text-fill: white;
+    -fx-font: normal bold 10pt "Courier New";
+    -fx-text-fill: red;
+    -fx-fill: red;
     -fx-background-color: #4f8;
 }
 

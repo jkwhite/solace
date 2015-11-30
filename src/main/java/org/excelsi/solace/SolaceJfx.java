@@ -75,6 +75,18 @@ public class SolaceJfx extends Application {
         closec.setAccelerator(KeyCombination.keyCombination("Shortcut+W"));
         shell.getItems().addAll(newc, closec);
 
+        Menu edit = new Menu("Edit");
+        MenuItem cut = new MenuItem("Cut");
+        cut.setAccelerator(KeyCombination.keyCombination("Shortcut+X"));
+        cut.setOnAction((e)->{ mc.cutSelection(); });
+        MenuItem copy = new MenuItem("Copy");
+        copy.setAccelerator(KeyCombination.keyCombination("Shortcut+C"));
+        copy.setOnAction((e)->{ mc.copySelection(); });
+        MenuItem paste = new MenuItem("Paste");
+        paste.setAccelerator(KeyCombination.keyCombination("Shortcut+V"));
+        paste.setOnAction((e)->{ mc.pasteBuffer(); });
+        edit.getItems().addAll(cut, copy, paste);
+
         Menu window = new Menu("Window");
         MenuItem shiftr = new MenuItem("Next Tab");
         shiftr.setAccelerator(KeyCombination.keyCombination("Shortcut+RIGHT"));
@@ -86,7 +98,7 @@ public class SolaceJfx extends Application {
 
         MenuBar mb = new MenuBar();
         mb.setUseSystemMenuBar(true);
-        mb.getMenus().addAll(shell, window);
+        mb.getMenus().addAll(shell, edit, window);
         return mb;
     }
 }

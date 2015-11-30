@@ -16,6 +16,11 @@ $c.keybindings['up'] = { $c.historyBack() }
 $c.keybindings['down'] = { $c.historyForward() }
 $c.keybindings['left'] = { $c.cursorLeft() }
 $c.keybindings['right'] = { $c.cursorRight() }
+
+// cle
+$c.keybindings['C-e'] = { $c.setCursorPos($c.getCursorLine().length()) }
+$c.keybindings['C-a'] = { $c.setCursorPos(0) }
+
 prompt = { '% ' }
 
 // builtins
@@ -69,6 +74,8 @@ class RestXml {
 
 // metamethods
 
+java.lang.String.metaClass.url = { delegate.toURL() }
+
 javax.swing.JComponent.metaClass.label = {
     def p = new JPanel(new BorderLayout())
     p.add(delegate, BorderLayout.CENTER)
@@ -90,7 +97,7 @@ about = {
 (c) 2015 John K White
 dhcmrlchtdj@gmail.com
 
-adrift in space where
+adrift on earth where
 the vast gulf between
 wandering minds awake
 wayward destinations,

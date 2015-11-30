@@ -8,6 +8,8 @@ public class Table extends ArrayList {
     private int _cols;
     private int _rows;
     private int _padding = 5;
+    private Integer _margin = 5;
+    private Boolean _grid;
 
 
     public Table(List data) {
@@ -36,6 +38,22 @@ public class Table extends ArrayList {
     public void setPadding(int padding) { _padding = padding; }
 
     public Table padding(int padding) { _padding = padding; return this; }
+
+    public Integer getMargin() {
+        return _margin;
+    }
+
+    public void setMargin(Integer margin) {
+        _margin = margin;
+    }
+
+    public Boolean getGrid() {
+        return _grid;
+    }
+
+    public void setGrid(Boolean grid) {
+        _grid = grid;
+    }
 
     public String toString() {
         return super.toString()+"; cols="+getCols()

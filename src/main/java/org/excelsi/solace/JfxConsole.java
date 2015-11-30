@@ -28,6 +28,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.application.Platform;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.DataFormat;
+import javafx.scene.layout.BorderPane;
 
 
 public class JfxConsole extends ScrollPane implements DynamicConsole {
@@ -58,9 +61,32 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
         _mc = mc;
         _shell.setVariable("$w", _mc);
         _shell.setVariable("$c", this);
-        _shell.setVariable("$r", _r);
+        _shell.setVariable("$r", _jfxr);
         _history = ms.createHistory();
-        init();
+    }
+
+    @Override public void cutSelection() {
+    }
+
+    @Override public void copySelection() {
+    }
+
+    @Override public void pasteBuffer() {
+        final DataFormat[] precedence = new DataFormat[]{
+            DataFormat.IMAGE,
+            DataFormat.URL,
+            DataFormat.HTML,
+            DataFormat.PLAIN_TEXT};
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        //System.err.println("types: "+clipboard.getContentTypes());
+        for(DataFormat f:precedence) {
+            Object o = clipboard.getContent(f);
+            if(o!=null) {
+                _input.append(o);
+                scrollToBottom();
+                break;
+            }
+        }
     }
 
     public String prompt() {
@@ -110,6 +136,7 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
     }
 
     @Override public void bksp() {
+        scrollToBottom();
         _input.backspace();
     }
 
@@ -121,6 +148,18 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
         _input.right();
     }
 
+    @Override public int getCursorPos() {
+        return _input.getPos();
+    }
+
+    @Override public void setCursorPos(int i) {
+        _input.setPos(i);
+    }
+
+    @Override public String getCursorLine() {
+        return _input.getText();
+    }
+
     @Override public void historyBack() {
         _input.setLine(_history.back());
     }
@@ -129,7 +168,7 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
         _input.setLine(_history.forward());
     }
 
-    private void init() {
+    public void init() {
         _lines = new VBox();
         _lines.getStyleClass().add("console");
         setContent(_lines);
@@ -160,10 +199,10 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
         else {
             kb.append(e.getCode().toString().toLowerCase());
         }
-        System.err.println("ID: "+e.getCode());
-        System.err.println("TXT: "+e.getText());
-        System.err.println("CHR: '"+e.getCharacter()+"'");
-        System.err.println("KEY: "+kb);
+        //System.err.println("ID: "+e.getCode());
+        //System.err.println("TXT: "+e.getText());
+        //System.err.println("CHR: '"+e.getCharacter()+"'");
+        //System.err.println("KEY: "+kb);
         final Runnable r = _keyBindings.get(kb.toString());
         if(r!=null) {
             // special action
@@ -176,9 +215,11 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
         }
         else if(e.getText().length()==1) {
             _input.append(e.getText());
+            scrollToBottom();
         }
         else if(kb.length()==1) {
             _input.append(kb.toString());
+            scrollToBottom();
         }
         else {
             System.err.println(String.format("unhandled key '%s'", kb));
@@ -186,11 +227,17 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
     }
 
     private void accept(boolean execute) {
-        String text = _input.getText().replaceAll("\\n", "");
+        String text;
+        synchronized(this) {
+            _input.freeze();
+            text = _input.getText().replaceAll("\\n", "");
+        }
+        /*
         _line.getChildren().remove(_input);
         Label in = new Label(text);
         in.getStyleClass().add("input");
         _line.getChildren().add(in);
+        */
         if(execute) {
             _pool.execute(()->{
                 execute(text);
@@ -202,106 +249,88 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
         }
     }
 
-    private HBox _line;
-    private LineInput _input;
+    //private HBox _line;
+    private BorderPane _line;
+    private Input _input;
 
-    static class LineInput extends HBox implements Stringable {
-        private final StringBuilder _text = new StringBuilder();
-        private final Label _pre = new Label("");
-        private final Label _curs = new Label(" ");
-        private final Label _post = new Label("");
-        private int _cursorIndex = 0;
+    private Input createInput(double prefw) {
+        return new LineInput();
+        /*
+        RTInput in = new RTInput();
+        System.err.println("prefw="+prefw);
+        prefw = 800;
+        in.setPrefWidth(prefw);
+        in.setMinWidth(prefw);
+        return in;
+        */
+    }
 
-
-        public LineInput() {
-            getStyleClass().add("input");
-            _curs.getStyleClass().add("cursor");
-            getChildren().add(_pre);
-            getChildren().add(_curs);
-            getChildren().add(_post);
-        }
-
-        @Override public String stringify() {
-            return _text.toString();
-        }
-
-        public void setLine(String s) {
-            _text.setLength(0);
-            _text.append(s);
-            updateText();
-        }
-
-        public void append(String s) {
-            if(_cursorIndex==_text.length()) {
-                _text.append(s);
+    private void waitForScrollUpdate(int waitTimes) {
+        //System.err.println("times: "+waitTimes);
+        if(waitTimes>0) {
+            if(getVvalue()==getVmax()) {
+                //System.err.println("wait");
+                Platform.runLater(()->{ waitForScrollUpdate(waitTimes-1); });
             }
             else {
-                _text.insert(_cursorIndex, s);
-            }
-            _cursorIndex++;
-            updateText();
-        }
-
-        public void backspace() {
-            if(_text.length()>0) {
-                if(_cursorIndex==_text.length()) {
-                    _text.setLength(_text.length()-1);
-                }
-                else {
-                    _text.deleteCharAt(_cursorIndex-1);
-                }
-                _cursorIndex--;
-                updateText();
+                //System.err.println("scroll");
+                scrollToBottom();
             }
         }
-
-        public void left() {
-            if(_cursorIndex>0) {
-                if(_cursorIndex>_text.length()) {
-                    _cursorIndex = _text.length();
-                }
-                _cursorIndex--;
-                updateText();
-            }
-        }
-
-        public void right() {
-            if(_cursorIndex<_text.length()) {
-                _cursorIndex++;
-                updateText();
-            }
-        }
-
-        public String getText() {
-            return _text.toString();
-        }
-
-        private void updateText() {
-            if(_cursorIndex<_text.length()) {
-                _pre.setText(_text.substring(0, _cursorIndex));
-                _curs.setText(_text.substring(_cursorIndex, _cursorIndex+1));
-                _post.setText(_text.substring(_cursorIndex+1));
-            }
-            else {
-                _pre.setText(_text.toString());
-                _curs.setText(" ");
-                _post.setText("");
-            }
+        else {
+            //System.err.println("default scroll");
+            scrollToBottom();
         }
     }
 
+    private void scrollToBottom() {
+        setVvalue(getVmax());
+    }
+    /*
+    private Runnable createScroller(int times) {
+        int vval = getVvalue();
+        return new Runnable() {
+            @Override public void run() {
+                if(vval!=getVmax()) {
+                    setVvalue(getVmax());
+                    Platform.runLater(createScroller());
+                }
+                else if(--times>0) {
+
+            }
+        };
+    }
+    */
+
     private void addLine() {
         if(Platform.isFxApplicationThread()) {
-            _line = new HBox();
-            _line.getStyleClass().add("input");
+            BorderPane line = new BorderPane();
+            line.getStyleClass().add("input");
             Label prompt = new Label(prompt());
             prompt.getStyleClass().add("prompt");
-            _line.getChildren().add(prompt);
-            _input = new LineInput();
-            _line.getChildren().add(_input);
-            _lines.getChildren().add(_line);
-            _history.push(_input);
-            Platform.runLater(()->{ setVvalue(getVmax()); });
+            //_line.getChildren().add(prompt);
+            line.setLeft(prompt);
+            double prefw = getWidth()-prompt.getWidth();
+            Input input = createInput(prefw);
+            //_line.getChildren().add((Node)_input);
+            line.setCenter((Node)input);
+            _lines.getChildren().add(line);
+            _history.push(input);
+            synchronized(this) {
+                _line = line;
+                _input = input;
+            }
+            //System.err.println("vvalue: "+getVvalue());
+            //System.err.println("vmax: "+getVmax());
+            /*
+            Platform.runLater(()->{
+                System.err.println("in vvalue: "+getVvalue());
+                System.err.println("in vmax: "+getVmax());
+                setVvalue(getVmax());
+            });
+            */
+            scrollToBottom();
+            waitForScrollUpdate(20);
         }
         else {
             Platform.runLater(()->{ addLine(); });
@@ -313,12 +342,14 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
         n.getStyleClass().add(type);
         if(Platform.isFxApplicationThread()) {
             _lines.getChildren().add(n);
-            setVvalue(getVmax());
+            scrollToBottom();
+            waitForScrollUpdate(20);
         }
         else {
             Platform.runLater(()->{
                 _lines.getChildren().add(n);
-                setVvalue(getVmax());
+                scrollToBottom();
+                waitForScrollUpdate(20);
             });
         }
     }

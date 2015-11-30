@@ -6,4 +6,7 @@ public interface Curses {
     void bksp();
     void cursorLeft();
     void cursorRight();
+    int getCursorPos();
+    void setCursorPos(int i);
+    String getCursorLine();
 }

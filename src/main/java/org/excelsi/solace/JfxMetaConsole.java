@@ -34,13 +34,23 @@ public class JfxMetaConsole implements MetaConsole {
         _delegate.prevTerminal();
     }
 
-    @Override
-    public void newWorksheet() {
+    @Override public void newWorksheet() {
         _delegate.newWorksheet();
     }
 
-    @Override
-    public void closeConsole() {
+    @Override public void closeConsole() {
         _delegate.closeConsole();
+    }
+
+    @Override public void cutSelection() {
+        _delegate.cutSelection();
+    }
+
+    @Override public void copySelection() {
+        _delegate.copySelection();
+    }
+
+    @Override public void pasteBuffer() {
+        _delegate.pasteBuffer();
     }
 }

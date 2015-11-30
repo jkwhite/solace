@@ -15,5 +15,10 @@ uses:
     - batik-awt-util-1.7.jar
     - commons-beanutils-1.8.3.jar
     - commons-collections-3.2.1.jar
+    - richtextfx-1.0.0-SNAPSHOT.jar
+    - reactfx-2.0-M4u1.jar
+    - undofx-1.2.jar
+    - flowless-0.4.7.jar
+    - wellbehavedfx-0.1.1.jar
 main: org.excelsi.gimmal.AppFactory
 sysargs: -Xmx1g -Dcom.sun.management.jmxremote
