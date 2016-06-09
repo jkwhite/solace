@@ -7,7 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
-
+import javafx.geometry.Pos;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
@@ -69,12 +70,24 @@ public class JfxRendererRegistry {
         r.register(o -> { return o instanceof Node; }, new NodeRenderer());
         r.register(o -> { return o instanceof Image; }, new ImageRenderer());
         r.register(o -> { return o instanceof URL; }, new UrlRenderer());
+        r.register(o -> { return o instanceof Annotation; }, new AnnotationRenderer());
         return r;
     }
 
     private static class NodeRenderer implements JfxRenderer {
         public Node render(Object o, Painter p, JfxRendererRegistry renderers) {
             return p.paint((Node) o);
+        }
+    }
+
+    private static class AnnotationRenderer implements JfxRenderer {
+        public Node render(Object o, Painter p, JfxRendererRegistry renderers) {
+            Annotation a = (Annotation) o;
+            Label l = new Label(a.getText(), renderers.render(a.getLabelled(), p));
+            if(a.getPos()!=null) {
+                l.setContentDisplay(ContentDisplay.valueOf(a.getPos().toUpperCase()));
+            }
+            return p.paint(l);
         }
     }
 

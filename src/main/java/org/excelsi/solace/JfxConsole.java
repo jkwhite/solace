@@ -130,6 +130,17 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
         addOutput(o, "output");
     }
 
+    @Override public void clear() {
+        if(Platform.isFxApplicationThread()) {
+            while(!_lines.getChildren().isEmpty()) {
+                _lines.getChildren().remove(0);
+            }
+        }
+        else {
+            Platform.runLater(()->{ clear(); });
+        }
+    }
+
     @Override public void brk() {
         _input.append("^C");
         accept(false);

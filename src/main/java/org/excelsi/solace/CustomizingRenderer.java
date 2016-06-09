@@ -31,10 +31,15 @@ public class CustomizingRenderer implements JfxRenderer {
 
     public Node render(Object o, Painter p, JfxRendererRegistry renderers) {
         Node n = _delegate.render(o, p, renderers);
+        if(_options.containsKey("label")) {
+            n = new Label(_options.get("label").toString(), n);
+        }
         for(Map.Entry<String,Object> e:_options.entrySet()) {
             switch(e.getKey()) {
                 case "rotate":
                     n.setRotate((Integer)e.getValue());
+                    break;
+                case "label":
                     break;
                 default:
             }

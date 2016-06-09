@@ -3,6 +3,7 @@ import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import groovy.swing.SwingBuilder;
 import org.excelsi.solace.Table;
+import org.excelsi.solace.Annotation;
 import groovy.util.Node;
 import groovy.xml.XmlUtil;
 
@@ -87,6 +88,10 @@ img = { u, opts=[:] ->
     infuse(new javafx.scene.image.ImageView(new javafx.scene.image.Image(u.toString())), opts)
 }
 
+label = { o, txt, opts=[:] ->
+    infuse(new Annotation(o, txt), opts)
+}
+
 javafx.scene.Node.metaClass.label = { text, opts=[:] ->
     infuse(new javafx.scene.control.Label(text, delegate), opts)
 }
@@ -142,3 +147,17 @@ $c.renderer.link(Node, new org.excelsi.solace.Renderer() {
 })
 
 imp org.excelsi.solace.Table
+
+// JavaFX
+
+sphere = { size=1 ->
+    new javafx.scene.shape.Sphere(size)
+}
+
+java.lang.Object.metaClass.label = { txt, opts=[:] ->
+    label(delegate, txt, opts)
+}
+
+java.lang.Object.metaClass.fx = { opts ->
+    return $r.remember(delegate, opts)
+}

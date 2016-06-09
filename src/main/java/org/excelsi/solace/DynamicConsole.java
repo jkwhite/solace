@@ -14,4 +14,5 @@ public interface DynamicConsole extends Curses, Editable {
     void historyBack();
     void historyForward();
     void print(Object o);
+    void clear();
 }
