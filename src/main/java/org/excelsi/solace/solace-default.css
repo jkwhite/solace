@@ -9,7 +9,7 @@
 }
 
 .output {
-    -fx-font: normal normal 10pt "Courier New";
+    /*-fx-font: normal normal 10pt "Courier New";*/
     -fx-text-fill: white;
     -fx-alignment: bottom-left;
 }
@@ -22,24 +22,24 @@ GridPane.output {
 */
 
 .error {
-    -fx-font: normal bold 10pt "Courier New";
+    /*-fx-font: normal bold 10pt "Courier New";*/
     -fx-text-fill: red;
 }
 
 .prompt {
-    -fx-font: normal bold 10pt "Courier New";
+    /*-fx-font: normal bold 10pt "Courier New";*/
     -fx-text-fill: white;
 }
 
 .input, .input .label {
-    -fx-font: normal bold 10pt "Courier New";
+    /*-fx-font: normal bold 10pt "Courier New";*/
     -fx-text-fill: white;
     -fx-fill: white;
     /*-fx-background-color: #000;*/
 }
 
 .cursor {
-    -fx-font: normal bold 10pt "Courier New";
+    /*-fx-font: normal bold 10pt "Courier New";*/
     -fx-text-fill: red;
     -fx-fill: red;
     -fx-background-color: #4f8;
@@ -48,6 +48,7 @@ GridPane.output {
 .console {
     -fx-background-color: #000;
     width:100%;
+    -fx-font: normal bold 10pt "Courier New";
 }
 
 /*

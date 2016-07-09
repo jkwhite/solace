@@ -40,6 +40,7 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
     private Map<String,Map<String,ColorHashMap>> _colors = new HashMap<String,Map<String,ColorHashMap>>();
     private Map<String,Runnable> _keyBindings = new HashMap<String,Runnable>();
     private String _colorscheme = "*";
+    private String _theme = null;
     private String _prompt = "% ";
     private VBox _lines;
     private final History _history;
@@ -114,6 +115,18 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
 
     public void bindkey(String key, Runnable r) {
         _keyBindings.put(key, r);
+    }
+
+    public void setTheme(final String theme) {
+        if(_theme!=null) {
+            getScene().getStylesheets().remove(_ms.findThemeStylesheetUrl(_theme));
+        }
+        final String url = _ms.findThemeStylesheetUrl(theme);
+        getScene().getStylesheets().add(url);
+    }
+
+    public String getTheme() {
+        return _theme;
     }
 
     public void setColorscheme(String c) {
