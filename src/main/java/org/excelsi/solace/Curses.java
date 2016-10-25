@@ -9,4 +9,5 @@ public interface Curses {
     int getCursorPos();
     void setCursorPos(int i);
     String getCursorLine();
+    String getch(long timeout);
 }

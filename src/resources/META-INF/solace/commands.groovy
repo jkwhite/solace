@@ -154,10 +154,22 @@ sphere = { size=1 ->
     new javafx.scene.shape.Sphere(size)
 }
 
+pause = { time=-1 ->
+    $c.getch(time)
+}
+
 java.lang.Object.metaClass.label = { txt, opts=[:] ->
     label(delegate, txt, opts)
 }
 
 java.lang.Object.metaClass.fx = { opts ->
     return $r.remember(delegate, opts)
+}
+
+java.lang.Object.metaClass.style = { style ->
+    return $r.remember(delegate, ['style':style])
+}
+
+java.lang.Object.metaClass.ctr = {
+    return $r.remember(delegate, ['center':true])
 }

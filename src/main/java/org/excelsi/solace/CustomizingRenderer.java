@@ -17,6 +17,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.web.WebView;
 import javafx.scene.layout.BorderPane;
 import javafx.application.Platform;
+import javafx.geometry.Pos;
 
 
 public class CustomizingRenderer implements JfxRenderer {
@@ -36,13 +37,36 @@ public class CustomizingRenderer implements JfxRenderer {
         }
         for(Map.Entry<String,Object> e:_options.entrySet()) {
             switch(e.getKey()) {
+                case "center":
+                    break;
                 case "rotate":
                     n.setRotate((Integer)e.getValue());
+                    break;
+                case "style":
+                    for(final String s:e.getValue().toString().split(",")) {
+                        n.getStyleClass().add(s);
+                    }
                     break;
                 case "label":
                     break;
                 default:
             }
+        }
+        if(_options.containsKey("center")) {
+            if(n instanceof GridPane) {
+                ((GridPane)n).setAlignment(Pos.CENTER);
+            }
+            /*
+            if(n instanceof GridPane) {
+                ((GridPane)n).setAlignment(Pos.CENTER);
+            }
+            else {
+                BorderPane bp = new BorderPane();
+                bp.setCenter(n);
+                n = bp;
+            }
+            */
+            n = new Centered(n);
         }
         return n;
     }

@@ -4,12 +4,23 @@
 }
 */
 
+Label {
+    -fx-font: normal normal 10pt "Courier New";
+}
+
+.sans-bold {
+    -fx-font: normal bold 10pt "Helvetica";
+}
+
+.sans-cond-bold {
+    -fx-font: normal normal 10pt "Helvetica Neue Condensed Bold";
+}
+
 .scroll-pane > .viewport {
    -fx-background-color: transparent;
 }
 
 .output {
-    -fx-font: normal normal 10pt "Courier New";
     -fx-text-fill: white;
     -fx-alignment: bottom-left;
 }
@@ -22,24 +33,24 @@ GridPane.output {
 */
 
 .error {
-    -fx-font: normal bold 10pt "Courier New";
+    /*-fx-font: normal bold 10pt "Courier New";*/
     -fx-text-fill: red;
 }
 
 .prompt {
-    -fx-font: normal bold 10pt "Courier New";
+    /*-fx-font: normal bold 10pt "Courier New";*/
     -fx-text-fill: white;
 }
 
 .input, .input .label {
-    -fx-font: normal bold 10pt "Courier New";
+    /*-fx-font: normal bold 10pt "Courier New";*/
     -fx-text-fill: white;
     -fx-fill: white;
     /*-fx-background-color: #000;*/
 }
 
 .cursor {
-    -fx-font: normal bold 10pt "Courier New";
+    /*-fx-font: normal bold 10pt "Courier New";*/
     -fx-text-fill: red;
     -fx-fill: red;
     -fx-background-color: #4f8;
@@ -61,3 +72,13 @@ GridPane.output {
     -fx-background-image: url('/org/excelsi/sketch/parchment-small2.jpg');
 }
 */
+
+.h1 {
+    /*-fx-font: normal bold 24pt "Courier New";*/
+    -fx-font-size: 24pt;
+}
+
+.h2 {
+    /*-fx-font: normal bold 18pt "Courier New";*/
+    -fx-font-size: 18pt;
+}

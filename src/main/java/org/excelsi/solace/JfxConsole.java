@@ -2,12 +2,18 @@ package org.excelsi.solace;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadFactory;
+import java.util.Stack;
 
+import javafx.scene.layout.Region;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Box;
 import javafx.util.Duration;
 import javafx.animation.*;
 import javafx.scene.Group;
@@ -43,6 +49,7 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
     private String _prompt = "% ";
     private VBox _lines;
     private final History _history;
+    private final Stack<KeyCallback> _keyCallbacks = new Stack<>();
     private final Executor _pool = Executors.newCachedThreadPool(new ThreadFactory() {
         @Override public Thread newThread(Runnable r) {
             Thread t = new Thread(r);
@@ -89,6 +96,29 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
         }
     }
 
+    @FunctionalInterface
+    interface KeyCallback {
+        void handleKey(String key);
+    }
+
+    @Override public String getch(final long timeout) {
+        final List<String> k = new ArrayList<>(1);
+        synchronized(k) {
+            _keyCallbacks.push((key)->{synchronized(k) {k.add(key);k.notify();}});
+            try {
+                if(timeout>0) {
+                    k.wait(timeout);
+                }
+                else {
+                    k.wait();
+                }
+            }
+            catch(InterruptedException e) {
+            }
+        }
+        return !k.isEmpty()?k.get(0):"";
+    }
+
     public String prompt() {
         Object p = null;
         try {
@@ -132,9 +162,10 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
 
     @Override public void clear() {
         if(Platform.isFxApplicationThread()) {
-            while(!_lines.getChildren().isEmpty()) {
-                _lines.getChildren().remove(0);
+            while(_lines.getChildren().size()>1) {
+                _lines.getChildren().remove(1);
             }
+            //addStrut();
         }
         else {
             Platform.runLater(()->{ clear(); });
@@ -183,10 +214,14 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
         _lines = new VBox();
         _lines.getStyleClass().add("console");
         setContent(_lines);
+        addStrut();
         _shell.init();
         addLine();
         setOnKeyPressed(k -> {
-            if(k.getCode()==KeyCode.ENTER) {
+            if(!_keyCallbacks.isEmpty()) {
+                _keyCallbacks.pop().handleKey(mapKeyEvent(k));
+            }
+            else if(k.getCode()==KeyCode.ENTER) {
                 accept(true);
             }
             else if(!k.isShortcutDown()) {
@@ -198,7 +233,12 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
         });
     }
 
-    private void handleKey(KeyEvent e) {
+    private void addStrut() {
+        final Rectangle strut = new Rectangle(getWidth(), 1d);
+        _lines.getChildren().add(strut);
+    }
+
+    private static String mapKeyEvent(final KeyEvent e) {
         // user-bound keys
         StringBuilder kb = new StringBuilder();
         if(e.isControlDown()) {
@@ -214,7 +254,12 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
         //System.err.println("TXT: "+e.getText());
         //System.err.println("CHR: '"+e.getCharacter()+"'");
         //System.err.println("KEY: "+kb);
-        final Runnable r = _keyBindings.get(kb.toString());
+        return kb.toString();
+    }
+
+    private void handleKey(KeyEvent e) {
+        final String kb = mapKeyEvent(e);
+        final Runnable r = _keyBindings.get(kb);
         if(r!=null) {
             // special action
             e.consume();
@@ -229,7 +274,7 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
             scrollToBottom();
         }
         else if(kb.length()==1) {
-            _input.append(kb.toString());
+            _input.append(kb);
             scrollToBottom();
         }
         else {
@@ -351,6 +396,9 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
     private void addOutput(Object o, String type) {
         Node n = render(o, type);
         n.getStyleClass().add(type);
+        if(n instanceof Region) {
+            ((Region)n).setPrefWidth(getWidth());
+        }
         if(Platform.isFxApplicationThread()) {
             _lines.getChildren().add(n);
             scrollToBottom();

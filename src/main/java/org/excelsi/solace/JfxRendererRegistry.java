@@ -52,6 +52,7 @@ public class JfxRendererRegistry {
         }
         Map options = _customizers.get(o);
         if(options!=null) {
+            //System.err.println("found custom renderer for "+o+": "+options);
             r = new CustomizingRenderer(r, options);
             _customizers.remove(o);
         }
