@@ -30,6 +30,30 @@ public class Tabs extends JComponent implements MetaConsole {
         //addConsole(new WorksheetConsole(_sf.newShell(), _sf.getMetaShell(), this));
     }
 
+    @Override public void nameTerminal(String name) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override public void nextTerminal() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override public void prevTerminal() {
+        throw new UnsupportedOperationException();
+    }
+
+    public void cutSelection() {
+        throw new UnsupportedOperationException();
+    }
+
+    public void copySelection() {
+        throw new UnsupportedOperationException();
+    }
+
+    public void pasteBuffer() {
+        throw new UnsupportedOperationException();
+    }
+
     public void addConsole(Console c) {
         if(++_count==1) {
             add(c, BorderLayout.CENTER);

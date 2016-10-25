@@ -8,6 +8,7 @@ import java.util.*;
 
 public class MetaShell {
     private static final String COLORS = "/colors";
+    private static final String THEMES = "/themes";
     private static final String PLUGINS = "/plugins";
     private static final String SCRIPTS = "/scripts";
     private static final String DB = "/var";
@@ -79,6 +80,10 @@ public class MetaShell {
         else {
             return null;
         }
+    }
+
+    public String findThemeStylesheetUrl(final String theme) {
+        return "file://"+root()+THEMES+"/"+theme+".css";
     }
 
     //public Object getVar(String name) {
