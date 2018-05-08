@@ -42,9 +42,9 @@ public class SolaceJfx extends Application {
         _mc.setDelegate(tabs);
         BorderPane root = new BorderPane();
         root.setCenter(tabs);
-        root.setTop(createMenu(tabs));
+        root.setTop(createMenu(stage, tabs));
 
-        Scene scene = new Scene(root, 1280, 1024, true, SceneAntialiasing.DISABLED);
+        Scene scene = new Scene(root, 1280, 1024, true, SceneAntialiasing.BALANCED);
         scene.getStylesheets().add("/org/excelsi/solace/solace-default.css");
         String usercss = _mc.getShellFactory().getMetaShell().getUserStylesheetUrl();
         if(usercss!=null) {
@@ -58,6 +58,7 @@ public class SolaceJfx extends Application {
         stage.setHeight(screen.getHeight());
 
         stage.setTitle("Solace");
+        //stage.setFullScreen(true);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
@@ -65,7 +66,7 @@ public class SolaceJfx extends Application {
         _mc.newTerminal();
     }
 
-    private Node createMenu(MetaConsole mc) {
+    private Node createMenu(final Stage stage, final MetaConsole mc) {
         Menu shell = new Menu("Shell");
         MenuItem newc = new MenuItem("New Tab");
         newc.setAccelerator(KeyCombination.keyCombination("Shortcut+T"));
@@ -87,6 +88,12 @@ public class SolaceJfx extends Application {
         paste.setOnAction((e)->{ mc.pasteBuffer(); });
         edit.getItems().addAll(cut, copy, paste);
 
+        Menu view = new Menu("View");
+        MenuItem fullsc = new MenuItem("Full Screen");
+        fullsc.setAccelerator(KeyCombination.keyCombination("Shortcut+ENTER"));
+        fullsc.setOnAction((e)->{ stage.setFullScreen(!stage.isFullScreen()); });
+        view.getItems().addAll(fullsc);
+
         Menu window = new Menu("Window");
         MenuItem shiftr = new MenuItem("Next Tab");
         shiftr.setAccelerator(KeyCombination.keyCombination("Shortcut+RIGHT"));
@@ -98,7 +105,7 @@ public class SolaceJfx extends Application {
 
         MenuBar mb = new MenuBar();
         mb.setUseSystemMenuBar(true);
-        mb.getMenus().addAll(shell, edit, window);
+        mb.getMenus().addAll(shell, edit, view, window);
         return mb;
     }
 }

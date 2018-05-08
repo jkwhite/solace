@@ -48,6 +48,7 @@ public class GShell implements Shell {
     public Object evaluate(String cmd) {
         try {
             Iterable<ExpressionParser.Expr> exprs;
+            System.err.println("WHAT: "+"cmd");
             if(_preparse) {
                 exprs = new ExpressionParser().parse(cmd);
             }

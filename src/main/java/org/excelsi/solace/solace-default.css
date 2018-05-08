@@ -9,11 +9,14 @@ Label {
 }
 
 .sans-bold {
-    -fx-font: normal bold 10pt "Helvetica";
+    /*-fx-font: normal bold 10pt "Helvetica";*/
+    -fx-font-family: "Helvetica";
+    -fx-font-weight: bold;
 }
 
 .sans-cond-bold {
-    -fx-font: normal normal 10pt "Helvetica Neue Condensed Bold";
+    -fx-font-family: "Helvetica Neue";
+    -fx-font-weight: bolder;
 }
 
 .scroll-pane > .viewport {
@@ -78,6 +81,7 @@ GridPane.output {
 .h1 {
     /*-fx-font: normal bold 24pt "Courier New";*/
     -fx-font-size: 24pt;
+    -fx-padding: 30pt;
 }
 
 .h2 {

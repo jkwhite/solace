@@ -12,8 +12,10 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.control.ScrollPane;
 import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 
 
 public class JfxTabs extends TabPane implements MetaConsole {
@@ -23,6 +25,18 @@ public class JfxTabs extends TabPane implements MetaConsole {
     public JfxTabs(ShellFactory shellFactory) {
         _shellFactory = shellFactory;
         getStyleClass().add("tabs");
+        getStyleClass().add("console");
+        getTabs().addListener((ListChangeListener) change -> {
+            final StackPane header = (StackPane) lookup(".tab-header-area");
+            if(header!=null) {
+                if(getTabs().size() == 1) {
+                    header.setPrefHeight(0);
+                }
+                else {
+                    header.setPrefHeight(-1);
+                }
+            }
+        });
     }
 
     @Override public void nameTerminal(String name) {

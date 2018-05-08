@@ -36,8 +36,7 @@ $name = { $w.nameTerminal(it) }
 //img = { new javax.swing.ImageIcon(it.toString()) }
 
 infuse = { obj, opts ->
-    opts.each { obj[it.key] = it.value }
-    obj
+    opts.each { obj[it.key] = it.value } obj
 }
 
 java.lang.Object.metaClass.infuse = { opts ->
@@ -58,6 +57,8 @@ table = { cols, list, opts=[:] ->
 }
 
 clear = { $c.clear() }
+
+
 invert = {
     def f = $c.fg;
     def b = $c.bg;
@@ -89,6 +90,7 @@ img = { u, opts=[:] ->
 }
 
 label = { o, txt, opts=[:] ->
+    System.err.println("labeling "+o);
     infuse(new Annotation(o, txt), opts)
 }
 
@@ -154,12 +156,16 @@ sphere = { size=1 ->
     new javafx.scene.shape.Sphere(size)
 }
 
+getch = { time=-1 ->
+    $c.getch(time)
+}
+
 pause = { time=-1 ->
     $c.getch(time)
 }
 
 java.lang.Object.metaClass.label = { txt, opts=[:] ->
-    label(delegate, txt, opts)
+    return label(delegate, txt, opts)
 }
 
 java.lang.Object.metaClass.fx = { opts ->
@@ -167,6 +173,9 @@ java.lang.Object.metaClass.fx = { opts ->
 }
 
 java.lang.Object.metaClass.style = { style ->
+    /*if(delegate instanceof javafx.scene.Node) {
+        delegate.getStyleClass().add(style);
+    }*/
     return $r.remember(delegate, ['style':style])
 }
 

@@ -35,8 +35,11 @@ public class LineInput extends HBox implements Input {
 
 
     public LineInput() {
-        getStyleClass().add("input");
-        _curs.getStyleClass().add("cursor");
+        //Styles.s(this, "console", "input");
+        //Styles.s(_pre, "console", "input");
+        //Styles.s(_post, "console", "input");
+        //Styles.s(_curs, "console", "input");
+        Styles.s(_curs, "console", "input", "cursor");
         getChildren().add(_pre);
         getChildren().add(_curs);
         getChildren().add(_post);

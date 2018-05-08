@@ -232,7 +232,9 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
         addLine();
         setOnKeyPressed(k -> {
             if(!_keyCallbacks.isEmpty()) {
-                _keyCallbacks.pop().handleKey(mapKeyEvent(k));
+                if(!k.isShortcutDown()) {
+                    _keyCallbacks.pop().handleKey(mapKeyEvent(k));
+                }
             }
             else if(k.getCode()==KeyCode.ENTER) {
                 accept(true);
@@ -374,14 +376,12 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
     private void addLine() {
         if(Platform.isFxApplicationThread()) {
             BorderPane line = new BorderPane();
-            line.getStyleClass().add("input");
+            Styles.s(line,"input");
             Label prompt = new Label(prompt());
-            prompt.getStyleClass().add("prompt");
-            //_line.getChildren().add(prompt);
+            Styles.s(prompt,"prompt");
             line.setLeft(prompt);
             double prefw = getWidth()-prompt.getWidth();
             Input input = createInput(prefw);
-            //_line.getChildren().add((Node)_input);
             line.setCenter((Node)input);
             _lines.getChildren().add(line);
             _history.push(input);
@@ -408,7 +408,8 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
 
     private void addOutput(Object o, String type) {
         Node n = render(o, type);
-        n.getStyleClass().add(type);
+        //n.getStyleClass().add(type);
+        Styles.s(n, "console", type);
         if(n instanceof Region) {
             ((Region)n).setPrefWidth(getWidth());
         }
