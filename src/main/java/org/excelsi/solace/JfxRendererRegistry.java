@@ -61,7 +61,7 @@ public class JfxRendererRegistry {
 
     public Node render(Object o, Painter p) {
         JfxRenderer r = createRenderer(o);
-        System.err.println("Created renderer "+r+" for "+o);
+        //System.err.println("Created renderer "+r+" for "+o);
         return r.render(o, p, this);
     }
 

@@ -78,13 +78,13 @@ GridPane.output {
 }
 */
 
-.h1 {
+.h1 * {
     /*-fx-font: normal bold 24pt "Courier New";*/
     -fx-font-size: 24pt;
     -fx-padding: 30pt;
 }
 
-.h2 {
+.h2 * {
     /*-fx-font: normal bold 18pt "Courier New";*/
     -fx-font-size: 18pt;
 }

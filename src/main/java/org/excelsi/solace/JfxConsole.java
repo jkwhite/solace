@@ -410,9 +410,9 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
         Node n = render(o, type);
         //Styles.s(n, "console", type);
         //TODO: why was this here?
-        //if(n instanceof Region) {
-            //((Region)n).setPrefWidth(getWidth());
-        //}
+        if(n instanceof Region) {
+            ((Region)n).setPrefWidth(getWidth());
+        }
         if(Platform.isFxApplicationThread()) {
             _lines.getChildren().add(n);
             scrollToBottom();
