@@ -41,16 +41,14 @@ public class JfxRendererRegistry {
 
     public JfxRenderer createRenderer(Object o) {
         JfxRenderer r = null;
+        for(Map.Entry<Predicate,JfxRenderer> e:_renderers.entrySet()) {
+            if(e.getKey().test(o)) {
+                r = e.getValue();
+                break;
+            }
+        }
         if(r==null) {
             r = new DefaultRenderer();
-        }
-        else {
-            for(Map.Entry<Predicate,JfxRenderer> e:_renderers.entrySet()) {
-                if(e.getKey().test(o)) {
-                    r = e.getValue();
-                    break;
-                }
-            }
         }
         Map options = _customizers.get(o);
         if(options!=null) {
@@ -63,6 +61,7 @@ public class JfxRendererRegistry {
 
     public Node render(Object o, Painter p) {
         JfxRenderer r = createRenderer(o);
+        System.err.println("Created renderer "+r+" for "+o);
         return r.render(o, p, this);
     }
 

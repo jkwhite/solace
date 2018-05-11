@@ -36,7 +36,8 @@ $name = { $w.nameTerminal(it) }
 //img = { new javax.swing.ImageIcon(it.toString()) }
 
 infuse = { obj, opts ->
-    opts.each { obj[it.key] = it.value } obj
+    opts.each { obj[it.key] = it.value }
+    obj
 }
 
 java.lang.Object.metaClass.infuse = { opts ->
