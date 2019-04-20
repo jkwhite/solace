@@ -162,7 +162,8 @@ getch = { time=-1 ->
 }
 
 pause = { time=-1 ->
-    $c.getch(time)
+    k = $c.getch(time)
+    if(k=='escape') throw new RuntimeException("interrupted: '$k'")
 }
 
 java.lang.Object.metaClass.label = { txt, opts=[:] ->

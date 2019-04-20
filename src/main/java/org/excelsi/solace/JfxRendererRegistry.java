@@ -40,6 +40,7 @@ public class JfxRendererRegistry {
     }
 
     public JfxRenderer createRenderer(Object o) {
+        if(o==null) return new DefaultRenderer();
         JfxRenderer r = null;
         for(Map.Entry<Predicate,JfxRenderer> e:_renderers.entrySet()) {
             if(e.getKey().test(o)) {
@@ -140,6 +141,9 @@ public class JfxRendererRegistry {
 
     private static class DefaultRenderer implements JfxRenderer {
         public Node render(Object o, Painter p, JfxRendererRegistry renderers) {
+            if(o instanceof Node) {
+                return (Node) o;
+            }
             return p.paint(new Label(o==null?"(null)":o.toString()));
         }
     }
