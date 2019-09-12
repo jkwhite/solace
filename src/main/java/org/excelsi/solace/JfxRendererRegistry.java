@@ -10,11 +10,13 @@ import java.util.function.Predicate;
 import javafx.geometry.Pos;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.TextFlow;
 
 
 public class JfxRendererRegistry {
@@ -53,7 +55,7 @@ public class JfxRendererRegistry {
         }
         Map options = _customizers.get(o);
         if(options!=null) {
-            //System.err.println("found custom renderer for "+o+": "+options);
+            System.err.println("found custom renderer for "+o+": "+options);
             r = new CustomizingRenderer(r, options);
             _customizers.remove(o);
         }
@@ -74,6 +76,7 @@ public class JfxRendererRegistry {
         r.register(o -> { return o instanceof Image; }, new ImageRenderer());
         r.register(o -> { return o instanceof URL; }, new UrlRenderer());
         r.register(o -> { return o instanceof Annotation; }, new AnnotationRenderer());
+        r.register(o -> { return o instanceof Text; }, new TextRenderer());
         return r;
     }
 
@@ -136,6 +139,28 @@ public class JfxRendererRegistry {
                 }
             }
             return p.paint(g);
+        }
+    }
+
+    private static class TextRenderer implements JfxRenderer {
+        public Node render(Object o, Painter p, JfxRendererRegistry renderers) {
+            Text t = (Text) o;
+            TextFlow tf = new TextFlow();
+            for(Text.Segment s:t.getSegments()) {
+                javafx.scene.text.Text seg = new javafx.scene.text.Text(s.getText());
+                String exp = "";
+                switch(s.getType()) {
+                    case "/":
+                        exp = "italic";
+                        break;
+                    default:
+                }
+                if(exp.length()>0) {
+                    seg.getStyleClass().add("text-"+exp);
+                }
+                tf.getChildren().add(seg); //p.paint(seg));
+            }
+            return p.paint(tf);
         }
     }
 

@@ -173,6 +173,10 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
         addOutput(o, "output");
     }
 
+    public void unprint() {
+        removeOutput();
+    }
+
     @Override public void clear() {
         if(Platform.isFxApplicationThread()) {
             while(_lines.getChildren().size()>1) {
@@ -421,6 +425,21 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
         else {
             Platform.runLater(()->{
                 _lines.getChildren().add(n);
+                scrollToBottom();
+                waitForScrollUpdate(20);
+            });
+        }
+    }
+
+    private void removeOutput() {
+        if(Platform.isFxApplicationThread()) {
+            _lines.getChildren().remove(_lines.getChildren().size()-1);
+            scrollToBottom();
+            waitForScrollUpdate(20);
+        }
+        else {
+            Platform.runLater(()->{
+                _lines.getChildren().remove(_lines.getChildren().size()-1);
                 scrollToBottom();
                 waitForScrollUpdate(20);
             });
