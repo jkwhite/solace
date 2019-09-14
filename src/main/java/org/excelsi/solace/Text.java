@@ -12,6 +12,11 @@ public class Text {
 
 
     public Text(String text) {
+        if(text==null) {
+            System.err.println("NULL TEXT");
+            Thread.dumpStack();
+            text = "";
+        }
         _segs = parse(text);
     }
 
@@ -46,7 +51,7 @@ public class Text {
             }
         }
         if(st!=i) {
-            segs.add(new Segment(""+MAGIC, t.substring(st)));
+            segs.add(new Segment(type, t.substring(st)));
         }
         return segs;
     }

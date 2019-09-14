@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import groovy.swing.SwingBuilder;
 import org.excelsi.solace.Table;
 import org.excelsi.solace.Annotation;
+import org.excelsi.solace.Text;
 import groovy.util.Node;
 import groovy.xml.XmlUtil;
 
@@ -57,6 +58,8 @@ table = { cols, list, opts=[:] ->
     infuse(new Table(cols, list), opts)
 }
 
+txt = { t -> new Text(t) }
+
 clear = { $c.clear() }
 
 
@@ -102,7 +105,7 @@ javafx.scene.Node.metaClass.label = { text, opts=[:] ->
 about = {
     img('/solace1.jpg').label(
 '''Solace 1.0
-(c) 2015 John K White
+(c) 2019 John K White
 dhcmrlchtdj@gmail.com
 
 adrift on earth where

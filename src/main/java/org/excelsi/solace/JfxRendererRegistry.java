@@ -143,21 +143,35 @@ public class JfxRendererRegistry {
     }
 
     private static class TextRenderer implements JfxRenderer {
+        private static final Map<String,String> EXPANSIONS = new HashMap<>();
+        static {
+            EXPANSIONS.put("/","italic");
+            EXPANSIONS.put("^","superscript");
+            EXPANSIONS.put("v","subscript");
+            EXPANSIONS.put("*","bold");
+            EXPANSIONS.put("`","normal");
+            EXPANSIONS.put("c","console");
+        }
+
         public Node render(Object o, Painter p, JfxRendererRegistry renderers) {
             Text t = (Text) o;
             TextFlow tf = new TextFlow();
+            javafx.scene.text.Text pseg = null;
             for(Text.Segment s:t.getSegments()) {
                 javafx.scene.text.Text seg = new javafx.scene.text.Text(s.getText());
-                String exp = "";
-                switch(s.getType()) {
-                    case "/":
-                        exp = "italic";
-                        break;
-                    default:
-                }
-                if(exp.length()>0) {
+                String exp = EXPANSIONS.get(s.getType());
+                //System.err.println("EXPansion for '"+s.getType()+"': "+exp);
+                if(exp!=null) {
                     seg.getStyleClass().add("text-"+exp);
+                    double ptrans = pseg!=null?pseg.getTranslateY():0;
+                    if("superscript".equals(exp)) {
+                        seg.setTranslateY(ptrans + seg.getFont().getSize() * -0.5);
+                    }
+                    else if("subscript".equals(exp)) {
+                        seg.setTranslateY(ptrans + seg.getFont().getSize() * 0.5);
+                    }
                 }
+                pseg = seg;
                 tf.getChildren().add(seg); //p.paint(seg));
             }
             return p.paint(tf);
