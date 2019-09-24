@@ -162,7 +162,9 @@ public class JfxRendererRegistry {
                 String exp = EXPANSIONS.get(s.getType());
                 //System.err.println("EXPansion for '"+s.getType()+"': "+exp);
                 if(exp!=null) {
-                    seg.getStyleClass().add("text-"+exp);
+                    String style = t.getBase()+"-"+exp;
+                    System.err.println("Style for '"+s.getText()+": '"+style+"'");
+                    seg.getStyleClass().add(style);
                     double ptrans = pseg!=null?pseg.getTranslateY():0;
                     if("superscript".equals(exp)) {
                         seg.setTranslateY(ptrans + seg.getFont().getSize() * -0.5);

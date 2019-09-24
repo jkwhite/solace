@@ -9,19 +9,25 @@ public class Text {
     private static final Set<String> TOKENS = new HashSet<String>(Arrays.asList(
         new String[]{""}));
     private final List<Segment> _segs;
+    private final String _base;
 
 
-    public Text(String text) {
+    public Text(String text, String base) {
         if(text==null) {
             System.err.println("NULL TEXT");
             Thread.dumpStack();
             text = "";
         }
         _segs = parse(text);
+        _base = base;
     }
 
     public List<Segment> getSegments() {
         return _segs;
+    }
+
+    public String getBase() {
+        return _base;
     }
 
     @Override public String toString() {

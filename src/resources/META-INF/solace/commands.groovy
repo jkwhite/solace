@@ -58,7 +58,9 @@ table = { cols, list, opts=[:] ->
     infuse(new Table(cols, list), opts)
 }
 
-txt = { t -> new Text(t) }
+txt = { t, base='text' ->
+    new Text(t,base)
+}
 
 clear = { $c.clear() }
 
