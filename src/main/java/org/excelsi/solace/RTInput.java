@@ -30,8 +30,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
 import org.fxmisc.richtext.CodeArea;
-import org.fxmisc.richtext.StyleSpans;
-import org.fxmisc.richtext.StyleSpansBuilder;
+import org.fxmisc.richtext.model.StyleSpans;
+import org.fxmisc.richtext.model.StyleSpansBuilder;
 
 
 public class RTInput extends BorderPane implements Input {

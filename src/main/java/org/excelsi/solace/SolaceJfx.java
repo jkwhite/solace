@@ -45,7 +45,7 @@ public class SolaceJfx extends Application {
         root.setTop(createMenu(stage, tabs));
 
         Scene scene = new Scene(root, 1280, 1024, true, SceneAntialiasing.BALANCED);
-        scene.getStylesheets().add("/org/excelsi/solace/solace-default.css");
+        scene.getStylesheets().add("/META-INF/solace/solace-default.css");
         String usercss = _mc.getShellFactory().getMetaShell().getUserStylesheetUrl();
         if(usercss!=null) {
             //scene.setUserAgentStylesheet(usercss);
@@ -60,7 +60,7 @@ public class SolaceJfx extends Application {
         stage.setTitle("Solace");
         //stage.setFullScreen(true);
         stage.setScene(scene);
-        stage.setResizable(false);
+        stage.setResizable(true);
         stage.show();
 
         _mc.newTerminal();

@@ -1,0 +1,90 @@
+/*
+.tabs {
+    -fx-background-color: #000;
+}
+*/
+
+Label {
+    -fx-font: normal normal 10pt "Courier New";
+}
+
+.sans-bold {
+    /*-fx-font: normal bold 10pt "Helvetica";*/
+    -fx-font-family: "Helvetica";
+    -fx-font-weight: bold;
+}
+
+.sans-cond-bold {
+    -fx-font-family: "Helvetica Neue";
+    -fx-font-weight: bolder;
+}
+
+.scroll-pane > .viewport {
+   -fx-background-color: transparent;
+}
+
+.output {
+    /*-fx-font: normal normal 10pt "Courier New";*/
+    -fx-text-fill: white;
+    -fx-alignment: bottom-left;
+}
+
+/*
+GridPane.output {
+    -fx-hgap:10px;
+    -fx-vgap:10px;
+}
+*/
+
+.error {
+    /*-fx-font: normal bold 10pt "Courier New";*/
+    -fx-text-fill: red;
+}
+
+.prompt {
+    /*-fx-font: normal bold 10pt "Courier New";*/
+    -fx-text-fill: white;
+}
+
+.input, .input .label {
+    /*-fx-font: normal bold 10pt "Courier New";*/
+    -fx-text-fill: white;
+    -fx-fill: white;
+    /*-fx-background-color: #000;*/
+}
+
+.cursor {
+    /*-fx-font: normal bold 10pt "Courier New";*/
+    -fx-text-fill: red;
+    -fx-fill: red;
+    -fx-background-color: #4f8;
+}
+
+.console {
+    -fx-background-color: #000;
+    width:100%;
+    -fx-font: normal bold 10pt "Courier New";
+}
+
+/*
+.keydesc {
+    -fx-font: normal normal 28pt "Cambria";
+    -fx-text-fill: #000;
+}
+
+.menu {
+    padding-top: 20px;
+    -fx-background-image: url('/org/excelsi/sketch/parchment-small2.jpg');
+}
+*/
+
+.h1 * {
+    /*-fx-font: normal bold 24pt "Courier New";*/
+    -fx-font-size: 24pt;
+    -fx-padding: 30pt;
+}
+
+.h2 * {
+    /*-fx-font: normal bold 18pt "Courier New";*/
+    -fx-font-size: 18pt;
+}

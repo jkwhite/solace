@@ -98,6 +98,7 @@ img = { u, opts=[:] ->
 label = { o, txt, opts=[:] ->
     System.err.println("labeling "+o);
     infuse(new Annotation(o, txt), opts)
+    System.err.println("done labeling "+o);
 }
 
 javafx.scene.Node.metaClass.label = { text, opts=[:] ->

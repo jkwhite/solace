@@ -83,6 +83,7 @@ public class GShell implements Shell {
             }
             catch(Exception e) {
                 System.err.println("failed executing core.groovy: "+e);
+                e.printStackTrace();
             }
             for(Enumeration<URL> us=getClass().getClassLoader().getResources("META-INF/solace/commands.groovy");us.hasMoreElements();) {
                 URL u = us.nextElement();
@@ -121,6 +122,7 @@ public class GShell implements Shell {
         }
         catch(Exception e) {
             System.err.println("failed executing "+f+": "+e);
+            e.printStackTrace();
         }
         finally {
             if(r!=null) try { r.close(); } catch(IOException e) {}
