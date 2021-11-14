@@ -104,10 +104,14 @@ application {
         "--add-opens","java.base/java.lang=ALL-UNNAMED",
         "--add-opens","java.base/java.lang.reflect=ALL-UNNAMED",
         "--add-opens","java.base/java.util=ALL-UNNAMED",
+        "--add-opens","java.desktop/javax.swing=ALL-UNNAMED",
+        "--add-opens","javafx.graphics/javafx.scene.image=ALL-UNNAMED",
         "--add-opens","javafx.graphics/javafx.scene=ALL-UNNAMED",
         "--add-opens","javafx.graphics/javafx.scene.layout=ALL-UNNAMED",
         "--add-opens","javafx.graphics/javafx.scene.shape=ALL-UNNAMED",
         "--add-opens","javafx.controls/javafx.scene.control=ALL-UNNAMED",
+        "-Dcom.apple.mrj.application.apple.menu.about.name=Solace",
+        // "-Xdock:name","AsdfDef",
         "-Xmx1g","-Dapple.laf.useScreenMenuBar=true","-XX:-OmitStackTraceInFastThrow","-Dapp.root=HACK_FOR_GRADLE"]
     startScripts {
         doLast {
@@ -120,6 +124,12 @@ application {
     mainClass='org.excelsi.solace.Main'
     version='1.0'
     group='excelsiorg'
+}
+
+setupBuilder {
+    vendor          = "excelsiorg";
+    copyright       = "Copyright © 2021 excelsiorg"
+    description     = "Solace";
 }
 
 tasks.named('test') {
@@ -141,7 +151,7 @@ applicationDistribution.from("src/etc/") {
 setupBuilder {
     vendor          = "excelsiorg";
     copyright       = "Copyright © 2021 excelsiorg"
-    description     = "Nausicaa";
+    description     = "Solace";
     
     // optional, defaults to project name
     // application     = "My Application";

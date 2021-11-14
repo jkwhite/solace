@@ -221,10 +221,12 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
 
     @Override public void historyBack() {
         _input.setLine(_history.back());
+        scrollToBottom();
     }
 
     @Override public void historyForward() {
         _input.setLine(_history.forward());
+        scrollToBottom();
     }
 
     public void init() {

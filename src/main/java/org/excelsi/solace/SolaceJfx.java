@@ -36,6 +36,10 @@ public class SolaceJfx extends Application {
 
     @Override
     public void start(final Stage stage) {
+        stage.setTitle("Solace");
+        System.setProperty("apple.laf.useScreenMenuBar", "true");
+        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Solace");
+
         Rectangle2D screen = Screen.getPrimary().getVisualBounds();
 
         JfxTabs tabs = new JfxTabs(_mc.getShellFactory());
