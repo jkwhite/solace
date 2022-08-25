@@ -6,9 +6,13 @@ import groovy.lang.Binding;
 import java.net.URL;
 import java.io.*;
 import java.util.*;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 
 public class GShell implements Shell {
+    private static final Logger LOG = LoggerFactory.getLogger(GShell.class);
+    private static final boolean HANDLE_UNLOCK = false;
     private static final String RC = System.getProperty("user.home")+"/.solacerc";
     private boolean _preparse = false;
     private Binding _binding = new CustomBinding();
@@ -82,8 +86,9 @@ public class GShell implements Shell {
                 _interpreter.evaluate(getClass().getClassLoader().getResource("META-INF/solace/core.groovy").openStream());
             }
             catch(Exception e) {
-                System.err.println("failed executing core.groovy: "+e);
-                e.printStackTrace();
+                // System.err.println("failed executing core.groovy: "+e);
+                // e.printStackTrace();
+                LOG.error("failed executing core.groovy: "+e, e);
             }
             for(Enumeration<URL> us=getClass().getClassLoader().getResources("META-INF/solace/commands.groovy");us.hasMoreElements();) {
                 URL u = us.nextElement();
@@ -94,8 +99,9 @@ public class GShell implements Shell {
                     //_interpreter.execute(readFully(is));
                 }
                 catch(Exception e) {
-                    System.err.println("failed executing "+u+": "+e);
-                    e.printStackTrace();
+                    // System.err.println("failed executing "+u+": "+e);
+                    // e.printStackTrace();
+                    LOG.error("failed executing "+u+": "+e, e);
                 }
                 finally {
                     if(is!=null) try { is.close(); } catch(Exception e) {}
@@ -110,7 +116,8 @@ public class GShell implements Shell {
             }
         }
         catch(IOException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            LOG.error("unexpected exception: "+e, e);
         }
     }
 
