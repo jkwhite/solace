@@ -82,20 +82,25 @@ public class GShell implements Shell {
     public void init() {
         setVariable("$s", this);
         try {
+            Reader rc = null;
             try {
-                _interpreter.evaluate(getClass().getClassLoader().getResource("META-INF/solace/core.groovy").openStream());
+                rc = new InputStreamReader(getClass().getClassLoader().getResource("META-INF/solace/core.groovy").openStream());
+                _interpreter.evaluate(rc);
             }
             catch(Exception e) {
                 // System.err.println("failed executing core.groovy: "+e);
                 // e.printStackTrace();
                 LOG.error("failed executing core.groovy: "+e, e);
             }
+            finally {
+                if(rc!=null) try { rc.close(); } catch(Exception e) {}
+            }
             for(Enumeration<URL> us=getClass().getClassLoader().getResources("META-INF/solace/commands.groovy");us.hasMoreElements();) {
                 URL u = us.nextElement();
-                InputStream is = null;
+                Reader r = null;
                 try {
-                    is = u.openStream();
-                    _interpreter.evaluate(is);
+                    r = new InputStreamReader(u.openStream());
+                    _interpreter.evaluate(r);
                     //_interpreter.execute(readFully(is));
                 }
                 catch(Exception e) {
@@ -104,7 +109,7 @@ public class GShell implements Shell {
                     LOG.error("failed executing "+u+": "+e, e);
                 }
                 finally {
-                    if(is!=null) try { is.close(); } catch(Exception e) {}
+                    if(r!=null) try { r.close(); } catch(Exception e) {}
                 }
             }
             for(File script:_ms.getScripts()) {
@@ -122,9 +127,9 @@ public class GShell implements Shell {
     }
 
     public void evalScript(File f) throws IOException {
-        BufferedInputStream r = null;
+        Reader r = null;
         try {
-            r = new BufferedInputStream(new FileInputStream(f));
+            r = new InputStreamReader(new BufferedInputStream(new FileInputStream(f)));
             _interpreter.evaluate(r);
         }
         catch(Exception e) {
