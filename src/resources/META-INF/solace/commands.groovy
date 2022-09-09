@@ -108,7 +108,7 @@ javafx.scene.Node.metaClass.label = { text, opts=[:] ->
 about = {
     img('/solace1.jpg').label(
 '''Solace 1.0
-(c) 2019 John K White
+(c) 2022 John K White
 dhcmrlchtdj@gmail.com
 
 adrift on earth where

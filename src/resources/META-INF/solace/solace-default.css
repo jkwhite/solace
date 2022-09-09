@@ -4,6 +4,19 @@
 }
 */
 
+/*
+Possible workaround to FX's lack of support for TTC fonts.
+See https://edencoding.com/resources/css_properties/fx-font-weight/
+Currently disabled in favor of requiring user to run a separate step
+via the packaged bin/ttc2ttf script and install ttf files manually.
+@font-face {
+  font-family: 'Helvetica Neue';
+  font-style: normal;
+  font-weight: 900;
+  src: url('HelveticaNeue-CondensedBlack-10.ttf') format('truetype');
+}
+*/
+
 Label {
     -fx-font: normal normal 10pt "Courier New";
 }
