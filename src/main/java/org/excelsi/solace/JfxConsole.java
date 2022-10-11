@@ -1,6 +1,7 @@
 package org.excelsi.solace;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadFactory;
 import java.util.Stack;
+import javax.imageio.ImageIO;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Box;
@@ -30,6 +33,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 import javafx.scene.Node;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.application.Platform;
@@ -227,6 +231,37 @@ public class JfxConsole extends ScrollPane implements DynamicConsole {
     @Override public void historyForward() {
         _input.setLine(_history.forward());
         scrollToBottom();
+    }
+
+    public void screenshot(String file) {
+        if(Platform.isFxApplicationThread()) {
+            synchronized(file) {
+                try {
+                    File save = new File(file);
+                    final WritableImage i = getScene().snapshot(null);
+                    try {
+                        ImageIO.write(SwingFXUtils.fromFXImage(i, null), "png", save);
+                    }
+                    catch(IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                finally {
+                    file.notify();
+                }
+            }
+        }
+        else {
+            synchronized(file) {
+                Platform.runLater(()->screenshot(file));
+                try {
+                    file.wait();
+                }
+                catch(InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public void init() {

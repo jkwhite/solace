@@ -1,6 +1,10 @@
 package org.excelsi.solace;
 
 
+import java.io.File;
+import java.io.IOException;
+
+import javafx.stage.FileChooser;
 import javafx.application.*;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.paint.Color;
@@ -105,7 +109,20 @@ public class SolaceJfx extends Application {
         MenuItem shiftl = new MenuItem("Prev Tab");
         shiftl.setAccelerator(KeyCombination.keyCombination("Shortcut+LEFT"));
         shiftl.setOnAction((e)->{ mc.prevTerminal(); });
-        window.getItems().addAll(shiftr, shiftl);
+        MenuItem screenshot = new MenuItem("Screenshot ...");
+        screenshot.setOnAction((e)->{
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Screenshot");
+            File selectedFile = fileChooser.showSaveDialog(stage);
+            if (selectedFile != null) {
+                String ss = selectedFile.toString();
+                if(!ss.endsWith(".png")) {
+                    ss = ss+".png";
+                }
+                _mc.screenshot(ss);
+            }
+        });
+        window.getItems().addAll(shiftr, shiftl, screenshot);
 
         MenuBar mb = new MenuBar();
         mb.setUseSystemMenuBar(true);

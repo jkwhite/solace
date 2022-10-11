@@ -190,3 +190,7 @@ java.lang.Object.metaClass.style = { style ->
 java.lang.Object.metaClass.ctr = {
     return $r.remember(delegate, ['center':true])
 }
+
+screenshot = { file ->
+    $c.screenshot(file)
+}

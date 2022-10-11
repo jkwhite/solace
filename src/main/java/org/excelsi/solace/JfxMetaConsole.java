@@ -53,4 +53,8 @@ public class JfxMetaConsole implements MetaConsole {
     @Override public void pasteBuffer() {
         _delegate.pasteBuffer();
     }
+
+    @Override public void screenshot(String file) {
+        _delegate.screenshot(file);
+    }
 }

@@ -100,6 +100,10 @@ public class JfxTabs extends TabPane implements MetaConsole {
         currentConsole().pasteBuffer();
     }
 
+    @Override public void screenshot(String file) {
+        currentConsole().screenshot(file);
+    }
+
     private JfxConsole currentConsole() {
         return (JfxConsole) getSelectionModel().getSelectedItem().getContent();
     }

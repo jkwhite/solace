@@ -8,4 +8,5 @@ public interface MetaConsole extends Editable {
     void prevTerminal();
     void newWorksheet();
     void closeConsole();
+    void screenshot(String file);
 }

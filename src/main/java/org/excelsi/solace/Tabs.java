@@ -54,6 +54,10 @@ public class Tabs extends JComponent implements MetaConsole {
         throw new UnsupportedOperationException();
     }
 
+    @Override public void screenshot(String file) {
+        throw new RuntimeException("unsupported");
+    }
+
     public void addConsole(Console c) {
         if(++_count==1) {
             add(c, BorderLayout.CENTER);
