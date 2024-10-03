@@ -1,5 +1,5 @@
 imp = {
-    $s.imports << 'import '+(it.hasProperty('name')?it['name']:it)
+    $s.imports << 'import '+(it instanceof Class?it.name : it)
     null
 }
 
